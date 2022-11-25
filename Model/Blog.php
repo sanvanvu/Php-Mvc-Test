@@ -4,10 +4,17 @@ namespace TestProject\Model;
 
 use mysql_xdevapi\Table;
 use TestProject\Base\Db;
+use TestProject\Middleware\GetData;
 
 class Blog extends Db
 {
     public $table='post';
+    public $primary='id';
+    protected $configsql;
+ public function __construct( )
+ {
+     parent::__construct($this->table,$this->primary);
+ }
 
     public function get($iOffset, $iLimit)
     {
@@ -20,36 +27,42 @@ class Blog extends Db
 
     public function getAll()
     {
-        $oStmt = $this->oDb->query('SELECT * FROM '.$this->table.' ORDER BY created_at DESC');
-        return $oStmt->fetchAll(\PDO::FETCH_OBJ);
+        return $this->_getData([],null,null,'created_at',true);
     }
 
+    /**
+     * @param array $aData
+     * @return bool
+     */
     public function add(array $aData)
     {
-     return   $this->insert($aData,$this->table);
+     return   $this->insert($aData);
     }
 
+    /**
+     * @param $iId
+     * @return mixed
+     */
     public function getById($iId)
     {
-        $oStmt = $this->oDb->prepare('SELECT * FROM '.$this->table.'  WHERE id = :id LIMIT 1');
-        $oStmt->bindParam(':id', $iId, \PDO::PARAM_INT);
-        $oStmt->execute();
-        return $oStmt->fetch(\PDO::FETCH_OBJ);
+        return $this->_getById($iId);
     }
 
+    /**
+     * @param array $aData
+     * @return bool
+     */
     public function update(array $aData)
     {
-        $oStmt = $this->oDb->prepare('UPDATE '.$this->table.' SET title = :title, content = :content WHERE id = :id LIMIT 1');
-        $oStmt->bindValue(':id', $aData['id'], \PDO::PARAM_INT);
-        $oStmt->bindValue(':title', $aData['title']);
-        $oStmt->bindValue(':content', $aData['content']);
-        return $oStmt->execute();
+        return $this->aUpdate($aData);
     }
 
+    /**
+     * @param $iId
+     * @return bool
+     */
     public function delete($iId)
     {
-        $oStmt = $this->oDb->prepare('DELETE FROM '.$this->table.'  WHERE id = :id LIMIT 1');
-        $oStmt->bindParam(':id', $iId, \PDO::PARAM_INT);
-        return $oStmt->execute();
+        return $this->aDelete($iId);
     }
 }

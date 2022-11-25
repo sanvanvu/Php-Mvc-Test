@@ -3,6 +3,7 @@
 namespace TestProject\Controller;
 
 use TestProject\Base\BaseController;
+use TestProject\Middleware\GetData;
 
 class Blog extends BaseController
 {
@@ -15,8 +16,7 @@ class Blog extends BaseController
     {
         /** Get the Model class in all the controller class **/
         $this->getModel('Blog');
-        $this->oModel = new \TestProject\Model\Blog;
-
+        $this->oModel = new \TestProject\Model\Blog( );
         /** Get the Post ID in the constructor in order to avoid the duplication of the same code **/
         $this->_iId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);
         parent::__construct();

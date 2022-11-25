@@ -26,8 +26,7 @@ class Blog extends Db
 
     public function add(array $aData)
     {
-        $oStmt = $this->oDb->prepare('INSERT INTO '.$this->table.'  (title, content) VALUES(:title, :content)');
-        return $oStmt->execute($aData);
+     return   $this->insert($aData,$this->table);
     }
 
     public function getById($iId)

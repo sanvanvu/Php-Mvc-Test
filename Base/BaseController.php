@@ -6,7 +6,6 @@ class BaseController
     {
         if (empty($_SESSION))
             @session_start();
-
     }
 
     protected function isLogged()

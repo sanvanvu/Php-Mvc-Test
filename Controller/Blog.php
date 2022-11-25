@@ -8,7 +8,7 @@ class Blog extends BaseController
 {
     const MAX_POSTS = 5;
 
-    protected $oUtil, $oModel;
+    protected  $oModel;
     private $_iId;
 
     public function __construct()
@@ -22,7 +22,6 @@ class Blog extends BaseController
         parent::__construct();
 
     }
-
 
     /***** Front end *****/
     // Homepage
